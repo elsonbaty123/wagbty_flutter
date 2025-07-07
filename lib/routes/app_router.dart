@@ -6,6 +6,8 @@ import '../features/dishes/dishes_list_screen.dart';
 import '../features/dishes/dish_details_screen.dart';
 import '../features/favorites/favorites_screen.dart';
 import '../features/profile/profile_screen.dart';
+import '../features/profile/edit_profile_screen.dart';
+import '../features/profile/add_edit_address_screen.dart';
 import '../features/settings/settings_screen.dart';
 import '../features/community/community_screen.dart';
 import '../features/order/order_screen.dart';
@@ -52,6 +54,24 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+      routes: [
+        GoRoute(
+          path: 'edit',
+          builder: (context, state) => const EditProfileScreen(),
+        ),
+        GoRoute(
+          path: 'addresses/add',
+          builder: (context, state) => const AddEditAddressScreen(),
+        ),
+        GoRoute(
+          path: 'addresses/edit/:id',
+          builder: (context, state) {
+            final addressId = state.pathParameters['id']!;
+            // We'll handle passing the address to edit in the screen itself
+            return AddEditAddressScreen();
+          },
+        ),
+      ],
     ),
     GoRoute(
       path: '/settings',

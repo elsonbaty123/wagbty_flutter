@@ -11,6 +11,7 @@ import '../../widgets/section_title.dart';
 import '../../sample_data.dart';
 import '../../widgets/chef_card.dart';
 import '../../widgets/dish_card.dart';
+import '../../widgets/chef_filter_bar.dart';
 import '../../theme/app_theme.dart';
 
 class AnimatedBackground extends StatelessWidget {
@@ -149,8 +150,30 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String _selectedCuisine = 'الكل';
+  double _minRating = 0;
+
+  void _handleCuisineSelected(String cuisine) {
+    setState(() {
+      _selectedCuisine = cuisine;
+      // In a real app, you would filter the chefs list here
+    });
+  }
+
+  void _handleRatingSelected(double rating) {
+    setState(() {
+      _minRating = rating;
+      // In a real app, you would filter the chefs list here
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,9 +254,51 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              _buildSectionHeader(
-                title: 'أفضل الطهاة',
-                onSeeAll: () => context.push('/chefs'),
+              // Chef Filters
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 16, left: 16, right: 16, bottom: 8),
+                  child: Text(
+                    'استكشف أفضل الطهاة',
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: colorScheme.onBackground,
+                    ),
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: ChefFilterBar(
+                  onCuisineSelected: _handleCuisineSelected,
+                  onRatingSelected: _handleRatingSelected,
+                  isRTL: isRTL,
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () => context.push('/chefs'),
+                        child: Text(
+                          'عرض الكل',
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: colorScheme.primary,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'أفضل الطهاة',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.onBackground,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               _buildChefsList(),
               _buildSectionHeader(
@@ -502,23 +567,65 @@ class HomeScreen extends StatelessWidget {
   }
   
   Widget _buildChefsList() {
+    // In a real app, you would filter the chefs based on the selected filters
+    final filteredChefs = sampleChefs.where((chef) {
+      final matchesCuisine = _selectedCuisine == 'الكل' || 
+          chef.cuisine == _selectedCuisine;
+      final matchesRating = chef.rating >= _minRating;
+      return matchesCuisine && matchesRating;
+    }).toList();
+
+    if (filteredChefs.isEmpty) {
+      return SliverToBoxAdapter(
+        child: Container(
+          height: 180,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.restaurant_menu,  // Using a different icon that exists
+                size: 48,
+                color: Colors.grey,  // Using a fixed color
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'لا توجد نتائج',
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    _selectedCuisine = 'الكل';
+                    _minRating = 0;
+                  });
+                },
+                child: const Text('إعادة تعيين الفلاتر'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 240,
-        child: ListView.separated(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+        height: 200, // Slightly taller to accommodate the rating
+        child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          physics: const BouncingScrollPhysics(),
-          itemCount: sampleChefs.length,
-          separatorBuilder: (_, __) => const SizedBox(width: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          itemCount: filteredChefs.length,
           itemBuilder: (context, index) {
-            final chef = sampleChefs[index];
-            return ChefCard(chef: chef).animate().slideX(
-              begin: 0.3,
-              end: 0,
-              duration: 300.ms,
-              delay: (index * 50).ms,
-              curve: Curves.easeOutCubic,
+            return Animate(
+              delay: Duration(milliseconds: index * 50),
+              effects: [FadeEffect()],
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 16),
+                child: ChefCard(chef: filteredChefs[index]),
+              ),
             );
           },
         ),
@@ -540,7 +647,7 @@ class HomeScreen extends StatelessWidget {
           (context, index) {
             final dish = sampleDishes[index % sampleDishes.length];
             return DishCard(dish: dish).animate().fadeIn(
-              delay: (index * 50).ms,
+              delay: Duration(milliseconds: index * 50),
               duration: 300.ms,
             );
           },

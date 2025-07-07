@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+import '../providers/locale_provider.dart';
 
 // Provider for theme mode
 final themeProvider = StateNotifierProvider<ThemeNotifier, ThemeMode>((ref) {
@@ -31,38 +31,6 @@ class ThemeNotifier extends StateNotifier<ThemeMode> {
     } else {
       state = ThemeMode.dark;
       await prefs.setBool('isDark', true);
-    }
-  }
-}
-
-// Provider for locale
-final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
-  return LocaleNotifier();
-});
-
-class LocaleNotifier extends StateNotifier<Locale> {
-  LocaleNotifier() : super(const Locale('ar')) {
-    _loadLocale();
-  }
-
-  Future<void> _loadLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    final languageCode = prefs.getString('language_code');
-    if (languageCode != null) {
-      state = Locale(languageCode);
-    } else {
-      state = const Locale('ar');
-    }
-  }
-
-  Future<void> toggleLocale() async {
-    final prefs = await SharedPreferences.getInstance();
-    if (state.languageCode == 'ar') {
-      state = const Locale('en');
-      await prefs.setString('language_code', 'en');
-    } else {
-      state = const Locale('ar');
-      await prefs.setString('language_code', 'ar');
     }
   }
 }

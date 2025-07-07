@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+import 'providers/locale_provider.dart';
 import 'routes/app_router.dart';
 import 'widgets/custom_app_bar.dart';
 import 'theme/app_theme.dart';

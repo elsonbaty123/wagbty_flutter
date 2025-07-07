@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../../widgets/main_scaffold.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../providers/auth_provider.dart';
 import 'package:go_router/go_router.dart';
+import '../../widgets/main_scaffold.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/user_provider.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -118,7 +120,13 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _buildUserProfile(BuildContext context, WidgetRef ref) {
+    final userAsync = ref.watch(userProvider);
+    final authToken = ref.watch(authProvider);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // User Avatar
         Container(
@@ -126,7 +134,7 @@ class ProfileScreen extends ConsumerWidget {
           height: 120,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Colors.blue[50],
+            color: Colors.grey[200],
             border: Border.all(color: Colors.blue, width: 2),
           ),
           child: const Icon(Icons.person, size: 60, color: Colors.blue),
@@ -139,9 +147,13 @@ class ProfileScreen extends ConsumerWidget {
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 5),
-        const Text(
-          'user@example.com',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
+        Text(
+          userAsync.when(
+            data: (user) => user?.email ?? 'user@example.com',
+            loading: () => 'جاري التحميل...',
+            error: (_, __) => 'user@example.com',
+          ),
+          style: const TextStyle(fontSize: 16, color: Colors.grey),
         ),
         const SizedBox(height: 30),
         
