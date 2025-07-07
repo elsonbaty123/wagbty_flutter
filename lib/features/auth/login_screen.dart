@@ -17,6 +17,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   bool _isLoading = false;
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
+  String _userType = 'customer'; // Default user type
 
   @override
   void dispose() {
@@ -35,6 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       final ok = await auth.login(
         _emailController.text.trim(),
         _passwordController.text,
+        userType: _userType,
       );
       
       if (!mounted) return;
@@ -173,12 +175,67 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 10),
                 
+                // User Type Selection
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.withAlpha((255 * 0.3).round())),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'نوع المستخدم',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('عميل'),
+                              value: 'customer',
+                              groupValue: _userType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _userType = value!;
+                                });
+                              },
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                            ),
+                          ),
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('طاهي'),
+                              value: 'chef',
+                              groupValue: _userType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _userType = value!;
+                                });
+                              },
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                
                 // Forgot Password
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     onPressed: () {
-                      // TODO: Implement forgot password
+                      context.push('/forgot-password');
                     },
                     child: const Text('نسيت كلمة المرور؟'),
                   ),
@@ -191,16 +248,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _login,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: 2,
                     ),
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             'تسجيل الدخول',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                   ),
                 ),
@@ -208,13 +267,26 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 
                 // Divider with "or"
                 Row(
-                  children: const [
-                    Expanded(child: Divider()),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text('أو'),
+                  children: [
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey.withAlpha((255 * 0.5).round()),
+                        thickness: 1,
+                      ),
                     ),
-                    Expanded(child: Divider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'أو',
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
+                    ),
+                    Expanded(
+                      child: Divider(
+                        color: Colors.grey.withAlpha((255 * 0.5).round()),
+                        thickness: 1,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -227,10 +299,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       onPressed: () {
                         context.push('/signup');
                       },
-                      child: const Text(
+                      child: Text(
                         'إنشاء حساب جديد',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shimmer/shimmer.dart';
-import '../../models/user_model.dart';
 import '../../providers/user_provider.dart';
 import '../../widgets/main_scaffold.dart';
 
@@ -42,9 +41,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         setState(() {
           _profileImagePath = image.path;
@@ -173,7 +172,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       children: [
         CircleAvatar(
           radius: 60,
-          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
           backgroundImage: _profileImagePath != null
               ? FileImage(File(_profileImagePath!))
               : null,
@@ -195,8 +194,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Widget _buildLoadingState(ColorScheme colorScheme) {
     return Shimmer.fromColors(
-      baseColor: colorScheme.surfaceVariant,
-      highlightColor: colorScheme.onSurface.withOpacity(0.1),
+      baseColor: colorScheme.surfaceContainerHighest,
+      highlightColor: colorScheme.onSurface.withAlpha(26), // 0.1 * 255 = 25.5
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(

@@ -48,6 +48,7 @@ dependencies:
   google_maps_flutter_platform_interface: ^2.4.0
   google_maps_webservice: ^0.0.20-nullsafety.5
   location: ^5.0.3
+  logger: ^2.0.0
   flutter_typeahead: ^4.3.7
   geocoding: ^2.0.5
   image_picker: ^1.0.7

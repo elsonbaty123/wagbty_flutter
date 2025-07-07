@@ -3,10 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user_model.dart';
 
 class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
-  final Ref _ref;
   static const String _userKey = 'user_data';
 
-  UserNotifier(this._ref) : super(const AsyncValue.loading()) {
+  UserNotifier() : super(const AsyncValue.loading()) {
     _loadUser();
   }
 
@@ -147,7 +146,7 @@ class UserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
 
 // Provider
 final userProvider = StateNotifierProvider<UserNotifier, AsyncValue<UserModel?>>(
-  (ref) => UserNotifier(ref),
+  (ref) => UserNotifier(),
 );
 
 // Provider for the current user (simplified access)

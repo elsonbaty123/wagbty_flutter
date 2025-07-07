@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../sample_data.dart';
 
 class ChefCard extends StatelessWidget {
@@ -31,8 +30,8 @@ class ChefCard extends StatelessWidget {
                     shape: BoxShape.circle,
                     gradient: LinearGradient(
                       colors: [
-                        colorScheme.primary.withOpacity(0.2),
-                        colorScheme.primary.withOpacity(0.05),
+                        colorScheme.primary.withAlpha(51), // 0.2 * 255 = 51
+                        colorScheme.primary.withAlpha(12), // 0.05 * 255 = 12.75
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -51,7 +50,7 @@ class ChefCard extends StatelessWidget {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withAlpha(25), // 0.1 * 255 = 25.5
                         blurRadius: 10,
                         offset: const Offset(0, 5),
                       ),
@@ -114,7 +113,7 @@ class ChefCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
-                color: colorScheme.onBackground,
+                color: colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 4),

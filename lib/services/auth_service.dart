@@ -1,14 +1,18 @@
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 class AuthService {
   final Dio _dio;
-  AuthService(this._dio);
+  final Logger _logger = Logger();
 
-  Future<String?> login(String email, String password) async {
+  AuthService({Dio? dio}) : _dio = dio ?? Dio();
+
+  Future<String?> login(String email, String password, {String userType = 'customer'}) async {
     try {
       final response = await _dio.post('/api/login', data: {
         'email': email,
         'password': password,
+        'userType': userType,
       });
       if (response.statusCode == 200) {
         return response.data['token'] as String?;
@@ -34,5 +38,14 @@ class AuthService {
 
   Future<void> logout() async {
     await _dio.post('/api/logout');
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    try {
+      await _dio.post('/api/forgot-password', data: {'email': email});
+    } catch (e) {
+      _logger.e('Error sending password reset email', error: e, stackTrace: StackTrace.current);
+      throw Exception('Failed to send password reset email.');
+    }
   }
 }

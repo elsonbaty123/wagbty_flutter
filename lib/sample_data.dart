@@ -1,6 +1,3 @@
-/// Sample in-memory data models used for early UI development.
-/// Replace with API-backed models once backend integration is ready.
-
 class Chef {
   final String id;
   final String name;

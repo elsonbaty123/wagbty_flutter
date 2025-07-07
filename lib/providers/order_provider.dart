@@ -18,7 +18,7 @@ class OrderNotifier extends StateNotifier<AsyncValue<List<OrderModel>>> {
       state = const AsyncValue.loading();
       final ordersJson = prefs.getStringList(_ordersKey) ?? [];
       final orders = ordersJson
-          .map((json) => OrderModel.fromJson(json is String ? jsonDecode(json) : json))
+          .map((json) => OrderModel.fromJson(jsonDecode(json)))
           .toList();
       
       // Sort orders by date (newest first)

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class SectionTitle extends StatelessWidget {
   const SectionTitle(
@@ -43,7 +42,7 @@ class SectionTitle extends StatelessWidget {
             title,
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: colorScheme.onBackground,
+              color: colorScheme.onSurface,
             ),
           ),
         ],

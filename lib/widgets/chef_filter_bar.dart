@@ -42,7 +42,7 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
         color: colorScheme.surface,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withAlpha(12), // 0.05 * 255 = 12.75
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -57,7 +57,7 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
             child: Text(
               'نوع المطبخ',
               style: theme.textTheme.titleSmall?.copyWith(
-                color: colorScheme.onSurface.withOpacity(0.8),
+                color: colorScheme.onSurface.withAlpha(204), // 0.8 * 255 = 204
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -86,8 +86,8 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
                         }
                       });
                     },
-                    backgroundColor: colorScheme.surfaceVariant,
-                    selectedColor: colorScheme.primary.withOpacity(0.2),
+                    backgroundColor: colorScheme.surfaceContainerHighest,
+                    selectedColor: colorScheme.primary.withAlpha(51), // 0.2 * 255 = 51
                     labelStyle: theme.textTheme.bodyMedium?.copyWith(
                       color: isSelected 
                           ? colorScheme.primary 
@@ -99,7 +99,7 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
                       side: BorderSide(
                         color: isSelected 
                             ? colorScheme.primary 
-                            : colorScheme.surfaceVariant,
+                            : colorScheme.surfaceContainerHighest,
                         width: 1,
                       ),
                     ),
@@ -119,7 +119,7 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
                 Text(
                   'التقييم',
                   style: theme.textTheme.titleSmall?.copyWith(
-                    color: colorScheme.onSurface.withOpacity(0.8),
+                    color: colorScheme.onSurface.withAlpha(204), // 0.8 * 255 = 204
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -191,14 +191,14 @@ class _ChefFilterBarState extends State<ChefFilterBar> {
                         }
                       });
                     },
-                    backgroundColor: colorScheme.surfaceVariant,
+                    backgroundColor: colorScheme.surfaceContainerHighest,
                     selectedColor: colorScheme.primary,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: BorderSide(
                         color: isSelected 
                             ? colorScheme.primary 
-                            : colorScheme.surfaceVariant,
+                            : colorScheme.surfaceContainerHighest,
                         width: 1,
                       ),
                     ),

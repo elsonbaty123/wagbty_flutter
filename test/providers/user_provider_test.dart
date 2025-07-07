@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wagbty/providers/user_provider.dart';
 import 'package:wagbty/models/user_model.dart';
 
@@ -40,7 +40,6 @@ class MockRef extends Mock implements Ref<Object?> {
 }
 
 void main() {
-  late MockSharedPreferences mockPrefs;
   late UserNotifier userNotifier;
   
   final testUser = UserModel(
@@ -61,8 +60,7 @@ void main() {
   );
 
   setUp(() {
-    mockPrefs = MockSharedPreferences();
-    userNotifier = UserNotifier(mockPrefs);
+    userNotifier = UserNotifier();
   });
 
   test('initial state is AsyncLoading', () {
@@ -84,7 +82,7 @@ void main() {
       // Assert
       final user = userNotifier.state.value;
       expect(user, isNotNull);
-      expect(user.name, 'Updated Name');
+      expect(user!.name, 'Updated Name');
       expect(user.email, 'updated@example.com');
       expect(user.phoneNumber, '+1987654321');
       expect(user.profileImage, 'path/to/image.jpg');
@@ -114,7 +112,8 @@ void main() {
       
       // Assert
       final user = userNotifier.state.value;
-      expect(user.addresses.length, 1);
+      expect(user != null, true);
+      expect(user!.addresses.length, 1);
       expect(user.addresses.first.id, 'addr1');
       expect(user.addresses.first.label, 'Home');
     });
@@ -132,7 +131,8 @@ void main() {
       
       // Assert
       final user = userNotifier.state.value;
-      expect(user.addresses.length, 1);
+      expect(user != null, true);
+      expect(user!.addresses.length, 1);
       expect(user.addresses.first.label, 'Updated Home');
       expect(user.addresses.first.addressLine1, '456 New St');
     });
@@ -146,7 +146,8 @@ void main() {
       
       // Assert
       final user = userNotifier.state.value;
-      expect(user.addresses.isEmpty, isTrue);
+      expect(user != null, true);
+      expect(user!.addresses.isEmpty, isTrue);
     });
     
     test('sets default address', () async {
@@ -162,7 +163,8 @@ void main() {
       
       // Assert
       final user = userNotifier.state.value;
-      final updatedAddr1 = user.addresses.firstWhere((a) => a.id == 'addr1');
+      expect(user != null, true);
+      final updatedAddr1 = user!.addresses.firstWhere((a) => a.id == 'addr1');
       final updatedAddr2 = user.addresses.firstWhere((a) => a.id == 'addr2');
       
       expect(updatedAddr1.isDefault, isFalse);

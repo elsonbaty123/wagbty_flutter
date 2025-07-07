@@ -63,13 +63,11 @@ class MockOrderNotifier extends StateNotifier<AsyncValue<List<OrderModel>>>
     ]);
   }
 
-  @override
   Future<void> addOrder(OrderModel order) async {
     final currentOrders = state.value ?? [];
     state = AsyncValue.data([...currentOrders, order]);
   }
 
-  @override
   Future<void> updateOrder(OrderModel updatedOrder) async {
     final currentOrders = state.value ?? [];
     final index =
@@ -81,7 +79,6 @@ class MockOrderNotifier extends StateNotifier<AsyncValue<List<OrderModel>>>
     }
   }
 
-  @override
   Future<void> cancelOrder(String orderId) async {
     final currentOrders = state.value ?? [];
     final index = currentOrders.indexWhere((order) => order.id == orderId);

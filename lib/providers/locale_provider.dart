@@ -8,6 +8,7 @@ class LocaleNotifier extends StateNotifier<Locale> {
   }
 
   static const _kKey = 'locale';
+  bool get isRTL => state.languageCode == 'ar';
 
   Future<void> _load() async {
     final prefs = await SharedPreferences.getInstance();
@@ -17,15 +18,17 @@ class LocaleNotifier extends StateNotifier<Locale> {
     }
   }
 
+  Future<void> toggleLocale() async {
+    final newLocale = state.languageCode == 'ar' 
+        ? const Locale('en', 'US') 
+        : const Locale('ar', 'SA');
+    await setLocale(newLocale);
+  }
+
   Future<void> setLocale(Locale locale) async {
     state = locale;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kKey, locale.languageCode);
-  }
-
-  void toggleLocale() {
-    final newLocale = state.languageCode == 'ar' ? const Locale('en') : const Locale('ar');
-    setLocale(newLocale);
   }
 }
 

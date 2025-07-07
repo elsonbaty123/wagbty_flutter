@@ -10,8 +10,6 @@ import 'package:geocoding/geocoding.dart';
 
 class LocationService {
   static const String _apiKey = 'YOUR_GOOGLE_MAPS_API_KEY';
-  static const String _baseUrl =
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json';
 
   final GoogleMapsPlaces _places = GoogleMapsPlaces(
     apiKey: _apiKey,
@@ -169,13 +167,13 @@ class _AddressSearchFieldState extends State<AddressSearchField> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: colorScheme.outline.withOpacity(0.5),
+                        color: colorScheme.outline.withAlpha(128), // 0.5 * 255 = 127.5
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: colorScheme.outline.withOpacity(0.5),
+                        color: colorScheme.outline.withAlpha(128), // 0.5 * 255 = 127.5
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -241,11 +239,11 @@ class _AddressSearchFieldState extends State<AddressSearchField> {
     return IconButton(
       onPressed: _getCurrentLocation,
       style: IconButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(
-            color: Theme.of(context).colorScheme.outline.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.outline.withAlpha(77), // 0.3 * 255 = 76.5
           ),
         ),
         padding: const EdgeInsets.all(12),

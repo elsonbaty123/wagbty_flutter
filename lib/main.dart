@@ -5,11 +5,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart' as intl;
+
+// Import the responsive framework constants
+import 'package:responsive_framework/responsive_framework.dart' show ResponsiveBreakpoints, Breakpoint, MOBILE, TABLET, DESKTOP;
 
 import 'providers/locale_provider.dart';
+import 'providers/theme_provider.dart';
 import 'routes/app_router.dart';
-import 'widgets/custom_app_bar.dart';
 import 'theme/app_theme.dart';
 void main() async {
   // Ensure Flutter is initialized
@@ -53,22 +56,48 @@ class WagbtyApp extends ConsumerWidget {
     final locale = ref.watch(localeProvider);
     
     return MaterialApp.router(
+      title: 'Wagbty',
       debugShowCheckedModeBanner: false,
-      title: 'وجبتي',
       routerConfig: appRouter,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      theme: AppTheme.lightTheme.copyWith(
+        textTheme: GoogleFonts.cairoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
+      darkTheme: AppTheme.darkTheme.copyWith(
+        textTheme: GoogleFonts.cairoTextTheme(
+          Theme.of(context).textTheme.apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.white,
+              ),
+        ),
+      ),
       themeMode: themeMode,
       locale: locale,
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('ar'), // Arabic
+        Locale('en', 'US'), // English
+        Locale('ar', 'SA'), // Arabic
       ],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
+      builder: (context, child) {
+        intl.Intl.defaultLocale = locale.languageCode;
+        bool isRTL = locale.languageCode == 'ar';
+        return Directionality(
+          textDirection: isRTL ? TextDirection.rtl : TextDirection.ltr,
+          child: ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: const [
+              Breakpoint(start: 0, end: 375, name: MOBILE),
+              Breakpoint(start: 376, end: 600, name: TABLET),
+              Breakpoint(start: 601, end: 1200, name: DESKTOP),
+            ],
+          ),
+        );
+      },
       localeResolutionCallback: (deviceLocale, supportedLocales) {
         // Check if the current device locale is supported
         for (var supportedLocale in supportedLocales) {
@@ -80,17 +109,6 @@ class WagbtyApp extends ConsumerWidget {
         // from the list (in our case, English)
         return supportedLocales.first;
       },
-      builder: (context, child) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: const [
-            Breakpoint(start: 0, end: 375, name: MOBILE),
-            Breakpoint(start: 376, end: 600, name: TABLET),
-            Breakpoint(start: 601, end: 1200, name: DESKTOP),
-          ],
-        ),
-      ),
     );
   }
 }

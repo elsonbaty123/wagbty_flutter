@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-
 class AnimatedSearchBar extends StatefulWidget {
   const AnimatedSearchBar({
     super.key,
@@ -59,12 +57,12 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
       curve: Curves.easeInOut,
       height: 56,
       decoration: BoxDecoration(
-        color: _isFocused ? colorScheme.surface : colorScheme.surfaceVariant,
+        color: _isFocused ? colorScheme.surface : colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           if (_isFocused)
             BoxShadow(
-              color: colorScheme.primary.withOpacity(0.2),
+              color: colorScheme.primary.withAlpha(51), // 0.2 * 255 = 51
               blurRadius: 15,
               offset: const Offset(0, 4),
             ),
@@ -117,7 +115,7 @@ class _AnimatedSearchBarState extends State<AnimatedSearchBar> {
                 size: 20,
               ),
               onPressed: _onClear,
-            ).animate().fadeIn(duration: 150.ms),
+            ),
         ],
       ),
     );

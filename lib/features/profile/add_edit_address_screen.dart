@@ -129,8 +129,6 @@ class _AddEditAddressScreenState extends ConsumerState<AddEditAddressScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     final isEdit = widget.address != null;
     
         return MainScaffold(

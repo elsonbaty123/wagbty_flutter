@@ -22,6 +22,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
   bool _acceptTerms = false;
+  String _userType = 'customer'; // Default user type
 
   @override
   void dispose() {
@@ -51,6 +52,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         'email': _emailController.text.trim(),
         'phone': _phoneController.text.trim(),
         'password': _passwordController.text,
+        'userType': _userType,
       });
 
       if (!mounted) return;
@@ -203,6 +205,61 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 ),
                 const SizedBox(height: 16),
                 
+                // User Type Selection
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[50],
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.grey.withAlpha((255 * 0.3).round())),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'نوع المستخدم',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('عميل'),
+                              value: 'customer',
+                              groupValue: _userType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _userType = value!;
+                                });
+                              },
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                            ),
+                          ),
+                          Expanded(
+                            child: RadioListTile<String>(
+                              title: const Text('طاهي'),
+                              value: 'chef',
+                              groupValue: _userType,
+                              onChanged: (value) {
+                                setState(() {
+                                  _userType = value!;
+                                });
+                              },
+                              activeColor: Theme.of(context).colorScheme.primary,
+                              contentPadding: EdgeInsets.zero,
+                              dense: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
                 // Password Field
                 TextFormField(
                   controller: _passwordController,
@@ -331,16 +388,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _submit,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
+                      elevation: 2,
                     ),
                     child: _isLoading
                         ? const CircularProgressIndicator(color: Colors.white)
                         : const Text(
                             'إنشاء حساب',
-                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                   ),
                 ),
@@ -354,10 +413,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       onPressed: () {
                         context.push('/login');
                       },
-                      child: const Text(
+                      child: Text(
                         'تسجيل الدخول',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

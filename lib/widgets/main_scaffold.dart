@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/theme_provider.dart';
 import 'theme_toggle_button.dart';
 
 /// A reusable scaffold that provides a bottom navigation bar shared across
@@ -55,7 +53,7 @@ class MainScaffold extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withAlpha(26), // 0.1 * 255 = 25.5
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -67,7 +65,7 @@ class MainScaffold extends StatelessWidget {
             currentIndex: currentIndex,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: colorScheme.primary,
-            unselectedItemColor: colorScheme.onSurface.withOpacity(0.6),
+            unselectedItemColor: colorScheme.onSurface.withAlpha(153), // 0.6 * 255 = 153
             selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
             unselectedLabelStyle: const TextStyle(fontSize: 11),
             showUnselectedLabels: true,

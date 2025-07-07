@@ -18,9 +18,9 @@ class AuthNotifier extends StateNotifier<String?> {
     if (token != null) state = token;
   }
 
-  Future<bool> login(String email, String password) async {
-    final authService = AuthService(_ref.read(dioProvider));
-    final token = await authService.login(email, password);
+  Future<bool> login(String email, String password, {String userType = 'customer'}) async {
+    final authService = AuthService(dio: _ref.read(dioProvider));
+    final token = await authService.login(email, password, userType: userType);
     if (token != null) {
       state = token;
       final prefs = await SharedPreferences.getInstance();
@@ -31,7 +31,11 @@ class AuthNotifier extends StateNotifier<String?> {
   }
 
   Future<bool> signup(Map<String, dynamic> data) async {
-    final authService = AuthService(_ref.read(dioProvider));
+    final authService = AuthService(dio: _ref.read(dioProvider));
+    // Ensure userType is included in the data
+    if (!data.containsKey('userType')) {
+      data['userType'] = 'customer'; // Default to customer if not specified
+    }
     final token = await authService.signup(data);
     if (token != null) {
       state = token;
@@ -46,6 +50,11 @@ class AuthNotifier extends StateNotifier<String?> {
     state = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_kTokenKey);
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    final authService = AuthService(dio: _ref.read(dioProvider));
+    await authService.sendPasswordResetEmail(email);
   }
 }
 

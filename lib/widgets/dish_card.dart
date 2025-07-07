@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import '../sample_data.dart';
 import '../providers/favorites_provider.dart';
 
@@ -29,7 +28,7 @@ class DishCard extends ConsumerWidget {
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withAlpha(12), // 0.05 * 255 = 12.75
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -63,7 +62,7 @@ class DishCard extends ConsumerWidget {
                         );
                       },
                       errorBuilder: (context, error, stackTrace) => Container(
-                        color: colorScheme.surfaceVariant,
+                        color: colorScheme.surfaceContainerHighest,
                         child: const Icon(Icons.restaurant_menu, size: 40),
                       ),
                     ),
@@ -78,8 +77,8 @@ class DishCard extends ConsumerWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Colors.black.withOpacity(0.1),
-                            Colors.black.withOpacity(0.3),
+                            Colors.black.withAlpha(26), // 0.1 * 255 = 25.5
+                            Colors.black.withAlpha(77), // 0.3 * 255 = 76.5
                           ],
                         ),
                       ),
@@ -97,12 +96,12 @@ class DishCard extends ConsumerWidget {
                         child: Container(
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
-                            color: colorScheme.surface.withOpacity(0.8),
+                            color: colorScheme.surface.withAlpha(204), // 0.8 * 255 = 204
                             shape: BoxShape.circle,
                           ),
                           child: Icon(
                             isFav ? Icons.favorite : Icons.favorite_border,
-                            color: isFav ? Colors.redAccent : colorScheme.onSurface.withOpacity(0.7),
+                            color: isFav ? Colors.redAccent : colorScheme.onSurface.withAlpha(178), // 0.7 * 255 = 178.5
                             size: 20,
                           ),
                         ),

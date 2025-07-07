@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import '../../widgets/main_scaffold.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/user_provider.dart';
-import 'edit_profile_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -121,9 +120,6 @@ class ProfileScreen extends ConsumerWidget {
 
   Widget _buildUserProfile(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(userProvider);
-    final authToken = ref.watch(authProvider);
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

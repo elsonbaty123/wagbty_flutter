@@ -7,6 +7,7 @@ class UserModel {
   final List<UserAddress> addresses;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String userType; // 'chef' or 'customer'
 
   UserModel({
     required this.id,
@@ -17,6 +18,7 @@ class UserModel {
     List<UserAddress>? addresses,
     this.createdAt,
     this.updatedAt,
+    this.userType = 'customer', // Default to customer if not specified
   }) : addresses = addresses ?? [];
 
   // Create a copyWith method to handle immutable updates
@@ -29,6 +31,7 @@ class UserModel {
     List<UserAddress>? addresses,
     DateTime? createdAt,
     DateTime? updatedAt,
+    String? userType,
   }) {
     return UserModel(
       id: id ?? this.id,
@@ -39,6 +42,7 @@ class UserModel {
       addresses: addresses ?? List.from(this.addresses),
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      userType: userType ?? this.userType,
     );
   }
 
@@ -53,6 +57,7 @@ class UserModel {
       'addresses': addresses.map((addr) => addr.toJson()).toList(),
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
+      'userType': userType,
     };
   }
 
@@ -74,6 +79,7 @@ class UserModel {
       updatedAt: json['updatedAt'] != null
           ? DateTime.parse(json['updatedAt'] as String)
           : null,
+      userType: json['userType'] as String? ?? 'customer',
     );
   }
 }

@@ -13,6 +13,7 @@ import '../features/community/community_screen.dart';
 import '../features/order/order_screen.dart';
 import '../features/auth/login_screen.dart';
 import '../features/auth/signup_screen.dart';
+import '../features/auth/forgot_password_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -66,7 +67,6 @@ final appRouter = GoRouter(
         GoRoute(
           path: 'addresses/edit/:id',
           builder: (context, state) {
-            final addressId = state.pathParameters['id']!;
             // We'll handle passing the address to edit in the screen itself
             return AddEditAddressScreen();
           },
@@ -92,6 +92,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/signup',
       builder: (context, state) => const SignupScreen(),
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (context, state) => const ForgotPasswordScreen(),
     ),
   ],
 );

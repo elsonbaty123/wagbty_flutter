@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 
 class AnimatedBackground extends StatefulWidget {
   const AnimatedBackground({super.key});
@@ -44,11 +43,11 @@ class _AnimatedBackgroundState extends State<AnimatedBackground> with SingleTick
 
   Color _getRandomColor() {
     final colors = [
-      Colors.orange.shade100.withOpacity(0.3),
-      Colors.orange.shade200.withOpacity(0.3),
-      Colors.orange.shade300.withOpacity(0.3),
-      Colors.orange.shade400.withOpacity(0.3),
-      Colors.orange.shade500.withOpacity(0.3),
+      Colors.orange.shade100.withAlpha(77), // 0.3 * 255 = 76.5
+      Colors.orange.shade200.withAlpha(77),
+      Colors.orange.shade300.withAlpha(77),
+      Colors.orange.shade400.withAlpha(77),
+      Colors.orange.shade500.withAlpha(77),
     ];
     return colors[_random.nextInt(colors.length)];
   }
@@ -100,7 +99,7 @@ class _BackgroundPainter extends CustomPainter {
     // Draw particles
     for (final particle in particles) {
       particle.update(time);
-      particle.draw(canvas, size);
+      particle.draw(canvas, size, time);
     }
   }
 
@@ -117,7 +116,7 @@ class AnimatedParticle {
   final Color color;
   final double baseSize;
   double timeOffset;
-  final Random _random = Random();
+  static final Random _random = Random();
 
   AnimatedParticle({
     required this.size,
@@ -152,7 +151,7 @@ class AnimatedParticle {
     }
   }
 
-  void draw(Canvas canvas, Size size) {
+  void draw(Canvas canvas, Size size, double time) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.fill;

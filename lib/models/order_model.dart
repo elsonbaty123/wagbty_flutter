@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 enum OrderStatus {
   pending,
@@ -9,7 +8,7 @@ enum OrderStatus {
   onTheWay,
   delivered,
   cancelled,
-  rejected
+  rejected,
 }
 
 extension OrderStatusExtension on OrderStatus {
@@ -93,22 +92,22 @@ class OrderItem {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'quantity': quantity,
-        'price': price,
-        'notes': notes,
-        'imageUrl': imageUrl,
-      };
+    'id': id,
+    'name': name,
+    'quantity': quantity,
+    'price': price,
+    'notes': notes,
+    'imageUrl': imageUrl,
+  };
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
-        id: json['id'],
-        name: json['name'],
-        quantity: json['quantity'],
-        price: json['price']?.toDouble() ?? 0.0,
-        notes: json['notes'],
-        imageUrl: json['imageUrl'],
-      );
+    id: json['id'],
+    name: json['name'],
+    quantity: json['quantity'],
+    price: json['price']?.toDouble() ?? 0.0,
+    notes: json['notes'],
+    imageUrl: json['imageUrl'],
+  );
 }
 
 class OrderModel {
@@ -151,48 +150,48 @@ class OrderModel {
   });
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'userId': userId,
-        'chefId': chefId,
-        'chefName': chefName,
-        'chefImageUrl': chefImageUrl,
-        'items': items.map((item) => item.toJson()).toList(),
-        'subtotal': subtotal,
-        'deliveryFee': deliveryFee,
-        'total': total,
-        'status': status.index,
-        'orderDate': orderDate.toIso8601String(),
-        'deliveryDate': deliveryDate?.toIso8601String(),
-        'deliveryAddress': deliveryAddress,
-        'specialInstructions': specialInstructions,
-        'rejectionReason': rejectionReason,
-        'paymentMethod': paymentMethod,
-        'isPaid': isPaid,
-      };
+    'id': id,
+    'userId': userId,
+    'chefId': chefId,
+    'chefName': chefName,
+    'chefImageUrl': chefImageUrl,
+    'items': items.map((item) => item.toJson()).toList(),
+    'subtotal': subtotal,
+    'deliveryFee': deliveryFee,
+    'total': total,
+    'status': status.index,
+    'orderDate': orderDate.toIso8601String(),
+    'deliveryDate': deliveryDate?.toIso8601String(),
+    'deliveryAddress': deliveryAddress,
+    'specialInstructions': specialInstructions,
+    'rejectionReason': rejectionReason,
+    'paymentMethod': paymentMethod,
+    'isPaid': isPaid,
+  };
 
   factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
-        id: json['id'],
-        userId: json['userId'],
-        chefId: json['chefId'],
-        chefName: json['chefName'],
-        chefImageUrl: json['chefImageUrl'],
-        items: (json['items'] as List)
-            .map((item) => OrderItem.fromJson(item))
-            .toList(),
-        subtotal: json['subtotal']?.toDouble() ?? 0.0,
-        deliveryFee: json['deliveryFee']?.toDouble() ?? 0.0,
-        total: json['total']?.toDouble() ?? 0.0,
-        status: OrderStatus.values[json['status'] ?? 0],
-        orderDate: DateTime.parse(json['orderDate']),
-        deliveryDate: json['deliveryDate'] != null
-            ? DateTime.parse(json['deliveryDate'])
-            : null,
-        deliveryAddress: json['deliveryAddress'],
-        specialInstructions: json['specialInstructions'],
-        rejectionReason: json['rejectionReason'],
-        paymentMethod: json['paymentMethod'],
-        isPaid: json['isPaid'] ?? false,
-      );
+    id: json['id'],
+    userId: json['userId'],
+    chefId: json['chefId'],
+    chefName: json['chefName'],
+    chefImageUrl: json['chefImageUrl'],
+    items: (json['items'] as List)
+        .map((item) => OrderItem.fromJson(item))
+        .toList(),
+    subtotal: json['subtotal']?.toDouble() ?? 0.0,
+    deliveryFee: json['deliveryFee']?.toDouble() ?? 0.0,
+    total: json['total']?.toDouble() ?? 0.0,
+    status: OrderStatus.values[json['status'] ?? 0],
+    orderDate: DateTime.parse(json['orderDate']),
+    deliveryDate: json['deliveryDate'] != null
+        ? DateTime.parse(json['deliveryDate'])
+        : null,
+    deliveryAddress: json['deliveryAddress'],
+    specialInstructions: json['specialInstructions'],
+    rejectionReason: json['rejectionReason'],
+    paymentMethod: json['paymentMethod'],
+    isPaid: json['isPaid'] ?? false,
+  );
 
   OrderModel copyWith({
     String? id,

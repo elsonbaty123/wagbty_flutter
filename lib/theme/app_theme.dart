@@ -88,7 +88,7 @@ class AppTheme {
         fontSize: 14,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.1,
-        color: textColor.withOpacity(0.8),
+        color: textColor.withAlpha(204), // 0.8 * 255 = 204
       ),
       bodyLarge: base.bodyLarge?.copyWith(
         fontSize: 16,
@@ -106,7 +106,7 @@ class AppTheme {
         fontSize: 12,
         fontWeight: FontWeight.w400,
         letterSpacing: 0.4,
-        color: textColor.withOpacity(0.7),
+        color: textColor.withAlpha(179), // 0.7 * 255 = 178.5
       ),
       labelLarge: base.labelLarge?.copyWith(
         fontSize: 14,
@@ -124,7 +124,7 @@ class AppTheme {
         fontSize: 11,
         fontWeight: FontWeight.w500,
         letterSpacing: 0.5,
-        color: textColor.withOpacity(0.7),
+        color: textColor.withAlpha(179), // 0.7 * 255 = 178.5
       ),
     );
   }
@@ -142,13 +142,12 @@ class AppTheme {
         secondary: _secondaryLight,
         secondaryContainer: _primaryLightLight,
         tertiary: _tertiaryLight,
-        background: _backgroundLight,
         surface: _surfaceLight,
-        surfaceVariant: _surfaceVariantLight,
+        surfaceContainerHighest: _surfaceVariantLight,
         onPrimary: _onPrimaryLight,
         onSecondary: _onSecondaryLight,
-        onBackground: _onBackgroundLight,
         onSurface: _onSurfaceLight,
+        onSurfaceVariant: _onBackgroundLight,
         error: _errorLight,
         onError: _onErrorLight,
         brightness: Brightness.light,
@@ -185,7 +184,7 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _onSurfaceLight.withOpacity(0.1)),
+          borderSide: BorderSide(color: _onSurfaceLight.withAlpha(26)), // 0.1 * 255 = 25.5
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -200,7 +199,7 @@ class AppTheme {
           borderSide: BorderSide(color: _errorLight, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(color: _onSurfaceLight.withOpacity(0.6)),
+        hintStyle: TextStyle(color: _onSurfaceLight.withAlpha(153)), // 0.6 * 255 = 153
         labelStyle: TextStyle(color: _onSurfaceLight),
         errorStyle: TextStyle(color: _errorLight, fontSize: 12),
       ),
@@ -215,14 +214,14 @@ class AppTheme {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: _surfaceLight,
         selectedItemColor: _primaryLight,
-        unselectedItemColor: _onSurfaceLight.withOpacity(0.6),
+        unselectedItemColor: _onSurfaceLight.withAlpha(153), // 0.6 * 255 = 153
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 4,
       ),
       dividerTheme: DividerThemeData(
-        color: _onSurfaceLight.withOpacity(0.1),
+        color: _onSurfaceLight.withAlpha(26), // 0.1 * 255 = 25.5
         thickness: 1,
         space: 1,
       ),
@@ -280,13 +279,12 @@ class AppTheme {
         secondary: _secondaryDark,
         secondaryContainer: _primaryDarkLight,
         tertiary: _tertiaryDark,
-        background: _backgroundDark,
         surface: _surfaceDark,
-        surfaceVariant: _surfaceVariantDark,
+        surfaceContainerHighest: _surfaceVariantDark,
         onPrimary: _onPrimaryDark,
         onSecondary: _onSecondaryDark,
-        onBackground: _onBackgroundDark,
         onSurface: _onSurfaceDark,
+        onSurfaceVariant: _onBackgroundDark,
         error: _errorDark,
         onError: _onErrorDark,
         brightness: Brightness.dark,
@@ -323,7 +321,7 @@ class AppTheme {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: _onSurfaceDark.withOpacity(0.2)),
+          borderSide: BorderSide(color: _onSurfaceDark.withAlpha(51)), // 0.2 * 255 = 51
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
@@ -338,7 +336,7 @@ class AppTheme {
           borderSide: BorderSide(color: _errorDark, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-        hintStyle: TextStyle(color: _onSurfaceDark.withOpacity(0.6)),
+        hintStyle: TextStyle(color: _onSurfaceDark.withAlpha(153)), // 0.6 * 255 = 153
         labelStyle: TextStyle(color: _onSurfaceDark),
         errorStyle: TextStyle(color: _errorDark, fontSize: 12),
       ),
@@ -353,14 +351,14 @@ class AppTheme {
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: _surfaceDark,
         selectedItemColor: _primaryDark,
-        unselectedItemColor: _onSurfaceDark.withOpacity(0.6),
+        unselectedItemColor: _onSurfaceDark.withAlpha(153), // 0.6 * 255 = 153
         showSelectedLabels: true,
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         elevation: 4,
       ),
       dividerTheme: DividerThemeData(
-        color: _onSurfaceDark.withOpacity(0.2),
+        color: _onSurfaceDark.withAlpha(51), // 0.2 * 255 = 51
         thickness: 1,
         space: 1,
       ),

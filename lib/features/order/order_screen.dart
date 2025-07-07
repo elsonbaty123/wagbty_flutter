@@ -45,7 +45,7 @@ class OrderScreen extends ConsumerWidget {
                   Icon(
                     Icons.receipt_long_outlined,
                     size: 80,
-                    color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+                    color: Theme.of(context).colorScheme.primary.withAlpha((255 * 0.5).round()),
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -82,7 +82,7 @@ class OrderScreen extends ConsumerWidget {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
-                return _buildOrderCard(context, order);
+                return _buildOrderCard(context, order, ref);
               },
             ),
           );
@@ -91,7 +91,7 @@ class OrderScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildOrderCard(BuildContext context, OrderModel order) {
+  Widget _buildOrderCard(BuildContext context, OrderModel order, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final dateFormat = DateFormat('dd/MM/yyyy - hh:mm a');
@@ -103,7 +103,7 @@ class OrderScreen extends ConsumerWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
-          color: colorScheme.outline.withOpacity(0.1),
+          color: colorScheme.outline.withAlpha(25),
           width: 1,
         ),
       ),
@@ -145,7 +145,7 @@ class OrderScreen extends ConsumerWidget {
                         Text(
                           orderDate,
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                            color: theme.textTheme.bodySmall?.color?.withAlpha((255 * 0.7).round()),
                           ),
                         ),
                       ],
@@ -158,10 +158,10 @@ class OrderScreen extends ConsumerWidget {
                       vertical: 6,
                     ),
                     decoration: BoxDecoration(
-                      color: order.status.statusColor.withOpacity(0.1),
+                      color: order.status.statusColor.withAlpha((255 * 0.1).round()),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: order.status.statusColor.withOpacity(0.3),
+                        color: order.status.statusColor.withAlpha((255 * 0.3).round()),
                         width: 1,
                       ),
                     ),
@@ -181,7 +181,7 @@ class OrderScreen extends ConsumerWidget {
                 children: [
                   CircleAvatar(
                     radius: 20,
-                    backgroundColor: colorScheme.primary.withOpacity(0.1),
+                    backgroundColor: colorScheme.primary.withAlpha((255 * 0.1).round()),
                     backgroundImage: order.chefImageUrl != null
                         ? NetworkImage(order.chefImageUrl!)
                         : null,
@@ -208,7 +208,7 @@ class OrderScreen extends ConsumerWidget {
                         Text(
                           '${order.items.length} ${order.items.length == 1 ? 'صنف' : 'أصناف'} • ${order.total.toStringAsFixed(2)} ر.س',
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.textTheme.bodySmall?.color?.withOpacity(0.7),
+                            color: theme.textTheme.bodySmall?.color?.withAlpha(179), // 0.7 * 255 = 178.5
                           ),
                         ),
                       ],
@@ -226,12 +226,12 @@ class OrderScreen extends ConsumerWidget {
                       child: OutlinedButton(
                         onPressed: () {
                           // Cancel order
-                          _showCancelDialog(context, order);
+                          _showCancelDialog(context, ref, order);
                         },
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           side: BorderSide(
-                            color: colorScheme.error.withOpacity(0.5),
+                            color: colorScheme.error.withAlpha(128), // 0.5 * 255 = 127.5
                           ),
                         ),
                         child: Text(
@@ -262,7 +262,7 @@ class OrderScreen extends ConsumerWidget {
     );
   }
 
-  void _showCancelDialog(BuildContext context, OrderModel order) {
+  void _showCancelDialog(BuildContext context, WidgetRef ref, OrderModel order) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -279,8 +279,7 @@ class OrderScreen extends ConsumerWidget {
               // Cancel the order
               final scaffoldMessenger = ScaffoldMessenger.of(context);
               try {
-                // TODO: Implement cancel order logic
-                // await ref.read(orderProvider.notifier).cancelOrder(order.id);
+                await ref.read(orderProvider.notifier).cancelOrder(order.id);
                 scaffoldMessenger.showSnackBar(
                   const SnackBar(content: Text('تم إلغاء الطلب بنجاح')),
                 );
